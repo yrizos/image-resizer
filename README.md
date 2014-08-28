@@ -14,4 +14,4 @@ $ir->resizeToMaxDimension(
 
 ```
 
-See `bin/image-resizer.php` for more.
+See `example/example.php` & `bin/image-resizer.php` for more.

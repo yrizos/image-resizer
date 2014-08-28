@@ -6,4 +6,5 @@ $application = new \Symfony\Component\Console\Application();
 $application->add(new \ImageResizer\Console\Command\ResizeToDimensionCommand());
 $application->add(new \ImageResizer\Console\Command\ResizeToWidthCommand());
 $application->add(new \ImageResizer\Console\Command\ResizeToHeightCommand());
+$application->add(new \ImageResizer\Console\Command\PadCommand());
 $application->run();
