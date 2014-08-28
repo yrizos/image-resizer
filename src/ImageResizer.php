@@ -64,8 +64,8 @@ class ImageResizer
         $images    = $this->findSourceImages();
         $dimension = (int)$dimension;
 
-        foreach ($images as $sourcePath) {
-            $layer  = ImageWorkshop::initFromPath($sourcePath);
+        foreach ($images as $path) {
+            $layer  = ImageWorkshop::initFromPath($path);
             $width  = null;
             $height = null;
 
@@ -75,7 +75,7 @@ class ImageResizer
                 $height = $dimension;
             }
 
-            $this->resize($sourcePath, $layer, $width, $height, $quality);
+            $this->resizeImage($path, $layer, $width, $height, $quality);
         }
 
         return true;
@@ -86,8 +86,8 @@ class ImageResizer
         $images = $this->findSourceImages();
         $width  = (int)$width;
 
-        foreach ($images as $sourcePath) {
-            $this->resize($sourcePath, ImageWorkshop::initFromPath($sourcePath), $width, null, $quality);
+        foreach ($images as $path) {
+            $this->resizeImage($path, ImageWorkshop::initFromPath($path), $width, null, $quality);
         }
 
         return true;
@@ -98,14 +98,54 @@ class ImageResizer
         $images = $this->findSourceImages();
         $height = (int)$height;
 
-        foreach ($images as $sourcePath) {
-            $this->resize($sourcePath, ImageWorkshop::initFromPath($sourcePath), null, $height, $quality);
+        foreach ($images as $path) {
+            $this->resizeImage($path, ImageWorkshop::initFromPath($path), null, $height, $quality);
         }
 
         return true;
     }
 
-    protected function resize($path, ImageWorkshopLayer $layer, $width = null, $height = null, $quality = 100)
+    public function pad($width, $height, $backgroundColor = null, $quality = 100)
+    {
+        $images = $this->findSourceImages();
+
+        foreach ($images as $path) {
+            $this->padImage($path, ImageWorkshop::initFromPath($path), $width, $height, $backgroundColor, $quality);
+        }
+
+        return true;
+    }
+
+    protected function resizeImage($path, ImageWorkshopLayer $layer, $width = null, $height = null, $quality = 100)
+    {
+        $layer->resizeInPixel($width, $height, true);
+
+        return $this->saveImage($path, $layer, $quality);
+    }
+
+    protected function padImage($path, ImageWorkshopLayer $layer, $width, $height, $backgroundColor = null, $quality = 100)
+    {
+        $width  = (int)$width;
+        $height = (int)$height;
+        $w      = $layer->getWidth();
+        $h      = $layer->getHeight();
+
+        if ($w > $width) $width = $w;
+        if ($h > $height) $height = $h;
+
+        $posX = ($width - $w) / 2;
+        $posY = ($height - $h) / 2;
+        $bg   = ImageWorkshop::initVirginLayer($width, $height, $backgroundColor);
+
+
+        $bg->addLayerOnTop($layer, $posX, $posY);
+
+        unset($layer);
+
+        return $this->saveImage($path, $bg, $quality);
+    }
+
+    protected function saveImage($path, ImageWorkshopLayer $layer, $quality = 100)
     {
         $path     = str_replace($this->getSourceDirectory(), $this->getTargetDirectory(), $path);
         $basename = basename($path);
@@ -113,10 +153,10 @@ class ImageResizer
         $quality  = (int)$quality;
         if ($quality < 1 || $quality > 100) $quality = 100;
 
-        $layer->resizeInPixel($width, $height, true);
         $layer->save($dirname, $basename, true, null, $quality);
 
         return file_exists($path);
     }
+
 
 }
