@@ -1,0 +1,34 @@
+{
+    "name": "yrizos/image-resizer",
+    "type": "library",
+    "keywords": ["image"],
+    "homepage": "https://github.com/yrizos/image-resizer",
+    "license": "MIT",
+
+    "authors": [
+        {
+            "name": "Yannis Rizos",
+            "email": "yrizos@gmail.com",
+            "homepage": "https://twitter.com/yrizos"
+        }
+    ],
+
+    "autoload": {
+        "psr-4": {
+            "ImageResizer\\": "src/"
+        }
+    },
+
+    "require": {
+        "php": ">=5.4.0",
+
+        "sybio/image-workshop": "2.0.6",
+        "symfony/console": "2.6.*@dev",
+        "symfony/finder": "2.6.*@dev"
+    },
+
+    "bin": [
+        "bin/image-resizer.php"
+    ]
+
+}
