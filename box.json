@@ -1,0 +1,28 @@
+{
+
+    "directories": [
+        "src/"
+    ],
+
+    "files": [
+        "LICENSE",
+        "README.md"
+    ],
+
+    "finder": [
+        {
+            "name": "*.php",
+            "exclude": [
+                "phpunit",
+                "phpunit-test-case",
+                "Tests",
+                "tests"
+            ],
+            "in": "vendor/"
+        }
+    ],
+
+    "main": "bin/image-resizer.php",
+    "output": "release/image-resizer.phar",
+    "stub": true
+}
