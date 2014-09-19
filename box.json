@@ -23,6 +23,7 @@
     ],
 
     "main": "bin/image-resizer.php",
-    "output": "release/image-resizer.phar",
+    "git-version": "git-version",
+    "output": "release/image-resizer-@git-version@.phar",
     "stub": true
 }

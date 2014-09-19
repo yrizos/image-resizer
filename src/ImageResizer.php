@@ -48,11 +48,12 @@ class ImageResizer
         return $this->targetDirectory;
     }
 
-    public function findSourceImages()
+    public function findSourceImages(array $extensions = ["jpg", "png"])
     {
-        $finder = new Finder();
-        $files  = $finder->files()->name("*.{jpg,png}")->in($this->getSourceDirectory());
-        $result = [];
+        $extensions = implode(",", $extensions);
+        $finder     = new Finder();
+        $files      = $finder->files()->name("*.{$extensions}")->in($this->getSourceDirectory());
+        $result     = [];
 
         foreach ($files as $file) $result[] = $file->getRealpath();
 
