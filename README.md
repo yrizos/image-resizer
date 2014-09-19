@@ -4,12 +4,13 @@ Quick example:
 
 $ir = new \ImageResizer\ImageResizer(
     "<source directory>",
-    "<target directory>"
+    "<target directory>",
+    85 // quality,
+    ["jpg"] // file extensions
 );
 
 $ir->resizeToMaxDimension(
-    1024, // max dimension,
-    85 // quality
+    1024 // max dimension
 );
 
 ```
